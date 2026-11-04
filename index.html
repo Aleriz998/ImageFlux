@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <title>ImageFlux — Visual thinking, connected</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <aside class="rail" aria-label="Strumenti">
+    <a class="logo" href="./" aria-label="ImageFlux">i<span>f</span></a>
+    <div class="rail-tools">
+      <button id="select-tool" class="tool active" title="Seleziona (V)" aria-label="Seleziona" aria-pressed="true">↖</button>
+      <button id="connect-tool" class="tool" title="Collega nodi (C)" aria-label="Collega nodi" aria-pressed="false">⌁</button>
+      <span class="divider"></span>
+      <button id="add-media" class="tool" title="Aggiungi immagini o video" aria-label="Aggiungi immagini o video">▧</button>
+      <button id="add-note" class="tool" title="Aggiungi nota (N)" aria-label="Aggiungi nota">T</button>
+      <button id="add-url" class="tool" title="Aggiungi media da URL" aria-label="Aggiungi media da URL">↗</button>
+    </div>
+    <button id="help" class="tool help" title="Guida e scorciatoie" aria-label="Guida e scorciatoie">?</button>
+  </aside>
+  <header>
+    <div class="project-meta"><span class="eyebrow">IL TUO SPAZIO CREATIVO</span><div class="project-title"><input id="project-name" value="Senza titolo" aria-label="Nome del progetto" maxlength="100"><span class="project-tag">BOARD</span></div></div>
+    <div class="header-actions"><span id="save-status" role="status">Salvataggio locale</span><button id="open-project" class="button">Apri progetto</button><button id="export-project" class="button primary">Esporta <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M14 3h7v7M21 3 10 14M10 5H6a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-4"/></svg></button></div>
+  </header>
+  <main id="viewport" tabindex="0" aria-label="Lavagna delle immagini. Trascina file qui per aggiungerli.">
+    <div class="board-caption"><span class="live-dot"></span> SPAZIO INFINITO <span class="caption-line"></span><span id="board-count">0 elementi</span></div>
+    <div id="world"><svg id="connections" aria-label="Collegamenti tra nodi"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs><g id="edge-layer"></g></svg><div id="nodes"></div></div>
+    <section id="empty-state">
+      <div class="empty-art"><span class="art-card back">▧</span><span class="art-card front">✳</span><span class="art-orbit">+</span></div>
+      <span class="eyebrow">OGNI IDEA INIZIA CON UN’IMMAGINE</span>
+      <h1>Fai spazio alle tue idee.</h1>
+      <p>Immagini, GIF, video. Raccogli le tue ispirazioni<br>e collegale in un unico spazio, senza limiti.</p>
+      <button id="empty-add" class="button primary">+ &nbsp; Aggiungi i primi media</button>
+      <span class="empty-hint">oppure trascina i file qui · incolla con Ctrl / ⌘ V</span>
+      <button id="load-demo" class="text-button">Esplora una board di esempio</button>
+    </section>
+    <div id="drop-overlay">Rilascia qui la tua prossima ispirazione <span>Immagini · GIF · Video</span></div>
+    <div id="connection-hint" hidden>Seleziona il nodo di partenza, poi quello di arrivo. Esc per annullare.</div>
+    <footer class="board-footer"><span>TRASCINA. ESPLORA. COLLEGA.</span><div class="zoom-controls"><button id="zoom-out" aria-label="Riduci zoom">−</button><span id="zoom-level">100%</span><button id="zoom-in" aria-label="Aumenta zoom">+</button><span class="divider"></span><button id="fit" title="Mostra tutto (F)" aria-label="Mostra tutto">⛶</button></div></footer>
+  </main>
+  <aside id="inspector" hidden aria-label="Proprietà selezione"><div class="inspector-heading"><span>SELEZIONE</span><button id="close-inspector" aria-label="Chiudi proprietà">×</button></div><label>Titolo<input id="item-title" maxlength="200"></label><label id="note-field" hidden>Testo<textarea id="note-text" rows="6"></textarea></label><label id="width-field">Larghezza<input id="item-width" type="range" min="160" max="700" step="10"></label><p id="selection-info"></p><button id="delete-selection" class="button danger">Elimina elemento</button></aside>
+  <div id="toast" role="status" hidden></div>
+  <dialog id="url-dialog"><form id="url-form"><span class="eyebrow">ISPIRAZIONI DAL WEB</span><h2>Aggiungi un media</h2><p>Incolla l’indirizzo diretto di un’immagine, GIF o video.</p><label>Indirizzo URL<input id="media-url" type="url" placeholder="https://esempio.it/immagine.jpg" required></label><label>Formato<select id="url-type"><option value="auto">Automatico</option><option value="image">Immagine / GIF</option><option value="video">Video</option></select></label><p class="fine-print">I link a pagine web non sono file multimediali. Il sito di origine deve consentire il caricamento esterno.</p><div class="dialog-actions"><button type="button" class="button" id="cancel-url">Annulla</button><button class="button primary">Aggiungi alla board</button></div></form></dialog>
+  <dialog id="help-dialog"><span class="eyebrow">PICCOLA GUIDA</span><h2>Il tuo pensiero, in movimento.</h2><dl><dt>Aggiungi media</dt><dd>Trascina file dal computer, immagini dal browser o incolla immagini e URL.</dd><dt>Organizza</dt><dd>Trascina un nodo per spostarlo. Usa la maniglia in basso a destra per ridimensionarlo.</dd><dt>Collega</dt><dd>Trascina dal pallino a destra di un nodo a un altro nodo, oppure premi C e seleziona due nodi. Clicca una freccia per darle un nome.</dd><dt>Naviga</dt><dd>Trascina lo sfondo per muoverti. Rotella per lo zoom; F per vedere tutto.</dd><dt>Scorciatoie</dt><dd>V seleziona · C collega · N nota · Canc elimina · Esc annulla.</dd><dt>Salva</dt><dd>Salvataggio automatico in questo browser. Esporta un progetto .imageflux per conservarlo o trasferirlo, inclusi i file importati. I media da URL restano esterni.</dd></dl><button id="close-help" class="button primary">Iniziamo</button></dialog>
+  <input id="file-input" type="file" accept="image/*,video/*" multiple hidden>
+  <input id="project-input" type="file" accept=".imageflux,.json" hidden>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
