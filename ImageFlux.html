@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <title>ImageFlux — Visual thinking, connected</title>
+  <style>:root{color-scheme:dark;--bg:#111318;--panel:#191c22;--border:#2b2e36;--muted:#8c919f;--text:#e9ebef;--accent:#c6f36b;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-synthesis:none}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);overflow:hidden}button,input,textarea,select{font:inherit}button{cursor:pointer}button,a,input,textarea,select{outline-offset:5px}button{color:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--accent)}button:hover{filter:brightness(1.18)}.rail{position:fixed;inset:0 auto 0 0;width:76px;background:#17191f;border-right:1px solid var(--border);z-index:20;display:flex;align-items:center;flex-direction:column}.logo{font-size:30px;font-weight:850;color:var(--accent);text-decoration:none;letter-spacing:-6px;margin:28px 7px 62px 0}.logo span{color:#e9ebef}.rail-tools{display:flex;flex-direction:column;align-items:center;gap:13px}.tool{background:transparent;border:0;border-radius:10px;width:42px;height:42px;font-size:25px;color:#9096a3;display:grid;place-items:center}.tool.active{background:#c6f31c1a;color:var(--accent);box-shadow:inset 0 0 0 1px #c6f33c22}.rail .divider{height:1px;width:25px;background:var(--border);margin:12px}.help{margin-top:auto;margin-bottom:24px;font-size:17px;border:1px solid var(--border);width:29px;height:29px;border-radius:50%}header{position:fixed;left:76px;right:0;top:0;height:100px;padding:24px 36px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;z-index:10;background:#15171c}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600}.project-title{display:flex;align-items:center;gap:16px;margin-top:6px}#project-name{border:0;background:transparent;color:var(--text);font-size:19px;font-weight:600;width:210px;padding:0}.project-tag{font-size:9px;letter-spacing:1px;color:#979ca7;border:1px solid #373b43;border-radius:4px;padding:4px 6px}.header-actions{display:flex;align-items:center;gap:12px}.button{padding:11px 16px;border:1px solid #363941;background:#20232a;border-radius:7px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:15px}.primary{background:var(--accent);border-color:var(--accent);color:#202717}.primary span{font-size:17px}#save-status{color:#858c98;font-size:11px;margin-right:14px}#viewport{position:fixed;inset:100px 0 0 76px;overflow:hidden;background-color:var(--bg);background-image:radial-gradient(#363940 1px,transparent 1px);background-size:24px 24px;outline:none;touch-action:none}#world{position:absolute;transform-origin:0 0;top:0;left:0}#connections{position:absolute;overflow:visible;width:1px;height:1px;pointer-events:none;color:#a6bf7f}.edge{pointer-events:stroke;cursor:pointer;fill:none;stroke:#8d9f70;stroke-width:2}.edge:hover,.edge.selected{stroke:var(--accent);stroke-width:3}.edge-hit{stroke:transparent;stroke-width:18;fill:none;pointer-events:stroke;cursor:pointer}.edge-label{fill:#cbd3c0;paint-order:stroke;stroke:#111318;stroke-width:7;font-size:12px;pointer-events:auto;cursor:pointer}.board-caption{position:absolute;top:25px;left:35px;display:flex;align-items:center;gap:10px;font-size:9px;letter-spacing:1.7px;color:#878c97;pointer-events:none;z-index:2}.live-dot{width:5px;height:5px;background:var(--accent);border-radius:50%}.caption-line{width:22px;height:1px;background:#42464e;margin:0 3px}#board-count{letter-spacing:.5px;color:#646a76}.board-footer{position:absolute;bottom:25px;left:35px;right:30px;display:flex;align-items:center;justify-content:space-between;pointer-events:none;z-index:8}.board-footer>span{font-size:9px;letter-spacing:1.8px;color:#676e7b}.zoom-controls{pointer-events:auto;display:flex;align-items:center;background:#1c1f26;border:1px solid #353942;border-radius:9px;padding:5px;box-shadow:0 3px 20px #0003}.zoom-controls button{border:0;background:none;width:33px;height:31px;color:#a5abb6;font-size:20px}#zoom-level{width:50px;text-align:center;font-size:11px;color:#c7ccd5}.zoom-controls .divider{height:18px;width:1px;background:#3a3e47;margin:0 6px}#empty-state{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;width:600px;max-width:90%;pointer-events:none}#empty-state button{pointer-events:auto}h1{font-size:clamp(26px,3vw,40px);font-weight:550;letter-spacing:-1.7px;margin:16px 0}#empty-state p{font-size:14px;line-height:1.9;color:#9196a2;margin:0 0 28px}#empty-state .button{padding:14px 23px;font-size:12px}.empty-hint{display:block;margin-top:17px;font-size:11px;color:#6f7684}.text-button{background:none;border:0;color:#b3b9c5;font-size:11px;margin-top:30px;padding:8px}.empty-art{height:155px;width:200px;margin:0 auto 25px;position:relative}.art-card{position:absolute;display:grid;place-items:center;width:94px;height:110px;top:22px;border-radius:10px;font-size:40px}.back{left:20px;background:linear-gradient(145deg,#2c3432,#1a2025);border:1px solid #4a5753;color:#778b80;transform:rotate(-16deg)}.front{left:86px;top:35px;background:linear-gradient(145deg,#353e29,#20271c);color:var(--accent);border:1px solid #596943;transform:rotate(12deg);box-shadow:-10px 10px 30px #0004}.art-orbit{position:absolute;right:1px;top:5px;color:#a5bf80;font-size:22px}#empty-state[hidden]{display:none}.node{position:absolute;border:1px solid #3b3e47;border-radius:10px;background:#1e2128;box-shadow:0 12px 28px #0004;user-select:none;touch-action:none}.node.selected{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 12px 28px #0004}.node.connect-source{border-color:#c6f36b;box-shadow:0 0 0 4px #c6f36b25}.node-header{height:35px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;gap:10px;cursor:grab;border-bottom:1px solid #343740}.node-title{font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.node-badge{font-size:8px;letter-spacing:1px;color:#989fab}.media-wrap{position:relative;min-height:90px;border-radius:0 0 9px 9px;overflow:hidden;background:#15171b}.node img,.node video{display:block;width:100%;max-height:580px;object-fit:contain;min-height:70px}.node img{pointer-events:none}.node .note-body{padding:20px;font-size:14px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;color:#d8dfca;min-height:125px}.node.note{background:#292e24;border-color:#4a5440}.port{position:absolute;width:14px;height:14px;border-radius:50%;background:#22282a;border:2px solid #a6bd84;top:50%;right:-8px;cursor:crosshair;z-index:3;touch-action:none}.port:hover{background:var(--accent);transform:scale(1.2)}.resize{position:absolute;right:2px;bottom:2px;width:18px;height:18px;cursor:nwse-resize;border:0;background:linear-gradient(135deg,transparent 55%,#808978 56%,#808978 62%,transparent 63%,transparent 70%,#808978 71%,#808978 77%,transparent 78%);opacity:0}.node:hover .resize,.node.selected .resize{opacity:1}.media-error{padding:20px;color:#c7b6a4;font-size:12px;line-height:1.6}.media-error button{display:block;margin-top:8px;border:1px solid #666;background:#292c32;border-radius:4px;padding:5px}#drop-overlay{display:none;position:absolute;inset:15px;border:2px dashed var(--accent);border-radius:15px;background:#141c16ed;z-index:40;align-items:center;justify-content:center;flex-direction:column;font-size:24px;color:var(--accent);pointer-events:none}#drop-overlay.visible{display:flex}#drop-overlay span{font-size:13px;margin-top:15px;color:#b4c0ab}#connection-hint{position:absolute;top:24px;left:50%;transform:translateX(-50%);padding:12px 18px;background:#303b25;border:1px solid #6d8550;border-radius:8px;font-size:12px;z-index:9;width:max-content;max-width:90%}#inspector{position:fixed;right:24px;top:124px;width:260px;padding:20px;background:#1c1f26f5;border:1px solid #3a3e47;border-radius:11px;z-index:12;box-shadow:0 15px 40px #0005}.inspector-heading{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:1.5px;color:#99a08f;margin-bottom:20px}.inspector-heading button{border:0;background:transparent;font-size:22px;color:#9097a5}label{display:block;font-size:11px;color:#a5acb9;margin:15px 0}input:not([type=range]),textarea,select{display:block;border:1px solid #3c424d;background:#14171d;color:#e3e7ec;border-radius:5px;padding:10px;width:100%;margin-top:7px}input[type=range]{width:100%;accent-color:var(--accent);margin-top:15px}textarea{resize:vertical}#project-name{margin:0;border-radius:0}#selection-info{font-size:11px;color:#838b99;line-height:1.7}.danger{color:#e4a69e;background:#382626;border-color:#653a36;width:100%;margin-top:12px}#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#2b3325;border:1px solid #71865b;color:#e3ecd8;border-radius:8px;padding:14px 20px;z-index:60;font-size:13px;max-width:90%;box-shadow:0 8px 30px #0005}dialog{background:#1c1f26;color:var(--text);border:1px solid #414650;border-radius:14px;padding:30px;width:470px;max-width:92vw;box-shadow:0 30px 100px #0008}dialog::backdrop{background:#090b10b8;backdrop-filter:blur(5px)}h2{font-size:24px;font-weight:550;letter-spacing:-.6px}dialog p{font-size:13px;line-height:1.7;color:#a2a9b5}.fine-print{font-size:11px}.dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:25px}dl{font-size:12px;line-height:1.7}dt{color:#d6e5c3;margin-top:13px;font-weight:600}dd{margin:3px 0;color:#a3aab7}#help-dialog{width:540px;max-height:90vh}#close-help{margin-top:15px}body.connecting .node{cursor:crosshair}body.connecting .node-header{cursor:crosshair}@media(max-width:800px){header{padding:18px;height:90px;left:60px}.rail{width:60px}#viewport{left:60px;top:90px}.header-actions{gap:6px}#save-status,.project-tag{display:none}#project-name{width:140px;font-size:16px}.header-actions .button{font-size:10px;padding:9px}.eyebrow{font-size:8px;letter-spacing:1px}.board-caption{left:20px}.board-footer{left:20px;right:15px}.board-footer>span{display:none}.zoom-controls{margin-left:auto}#inspector{right:12px;top:108px;width:230px}#empty-state{top:45%}h1{letter-spacing:-1px}.empty-art{transform:scale(.8);margin-bottom:0}}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+  <aside class="rail" aria-label="Strumenti">
+    <a class="logo" href="#" aria-label="ImageFlux">i<span>f</span></a>
+    <div class="rail-tools">
+      <button id="select-tool" class="tool active" title="Seleziona (V)" aria-label="Seleziona" aria-pressed="true">↖</button>
+      <button id="connect-tool" class="tool" title="Collega nodi (C)" aria-label="Collega nodi" aria-pressed="false">⌁</button>
+      <span class="divider"></span>
+      <button id="add-media" class="tool" title="Aggiungi immagini o video" aria-label="Aggiungi immagini o video">▧</button>
+      <button id="add-note" class="tool" title="Aggiungi nota (N)" aria-label="Aggiungi nota">T</button>
+      <button id="add-url" class="tool" title="Aggiungi media da URL" aria-label="Aggiungi media da URL">↗</button>
+    </div>
+    <button id="help" class="tool help" title="Guida e scorciatoie" aria-label="Guida e scorciatoie">?</button>
+  </aside>
+  <header>
+    <div class="project-meta"><span class="eyebrow">IL TUO SPAZIO CREATIVO</span><div class="project-title"><input id="project-name" value="Senza titolo" aria-label="Nome del progetto" maxlength="100"><span class="project-tag">BOARD</span></div></div>
+    <div class="header-actions"><span id="save-status" role="status">Salvataggio locale</span><button id="open-project" class="button">Apri progetto</button><button id="export-project" class="button primary">Esporta <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M14 3h7v7M21 3 10 14M10 5H6a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-4"/></svg></button></div>
+  </header>
+  <main id="viewport" tabindex="0" aria-label="Lavagna delle immagini. Trascina file qui per aggiungerli.">
+    <div class="board-caption"><span class="live-dot"></span> SPAZIO INFINITO <span class="caption-line"></span><span id="board-count">0 elementi</span></div>
+    <div id="world"><svg id="connections" aria-label="Collegamenti tra nodi"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs><g id="edge-layer"></g></svg><div id="nodes"></div></div>
+    <section id="empty-state">
+      <div class="empty-art"><span class="art-card back">▧</span><span class="art-card front">✳</span><span class="art-orbit">+</span></div>
+      <span class="eyebrow">OGNI IDEA INIZIA CON UN’IMMAGINE</span>
+      <h1>Fai spazio alle tue idee.</h1>
+      <p>Immagini, GIF, video. Raccogli le tue ispirazioni<br>e collegale in un unico spazio, senza limiti.</p>
+      <button id="empty-add" class="button primary">+ &nbsp; Aggiungi i primi media</button>
+      <span class="empty-hint">oppure trascina i file qui · incolla con Ctrl / ⌘ V</span>
+      <button id="load-demo" class="text-button">Esplora una board di esempio</button>
+    </section>
+    <div id="drop-overlay">Rilascia qui la tua prossima ispirazione <span>Immagini · GIF · Video</span></div>
+    <div id="connection-hint" hidden>Seleziona il nodo di partenza, poi quello di arrivo. Esc per annullare.</div>
+    <footer class="board-footer"><span>TRASCINA. ESPLORA. COLLEGA.</span><div class="zoom-controls"><button id="zoom-out" aria-label="Riduci zoom">−</button><span id="zoom-level">100%</span><button id="zoom-in" aria-label="Aumenta zoom">+</button><span class="divider"></span><button id="fit" title="Mostra tutto (F)" aria-label="Mostra tutto">⛶</button></div></footer>
+  </main>
+  <aside id="inspector" hidden aria-label="Proprietà selezione"><div class="inspector-heading"><span>SELEZIONE</span><button id="close-inspector" aria-label="Chiudi proprietà">×</button></div><label>Titolo<input id="item-title" maxlength="200"></label><label id="note-field" hidden>Testo<textarea id="note-text" rows="6"></textarea></label><label id="width-field">Larghezza<input id="item-width" type="range" min="160" max="700" step="10"></label><p id="selection-info"></p><button id="delete-selection" class="button danger">Elimina elemento</button></aside>
+  <div id="toast" role="status" hidden></div>
+  <dialog id="url-dialog"><form id="url-form"><span class="eyebrow">ISPIRAZIONI DAL WEB</span><h2>Aggiungi un media</h2><p>Incolla l’indirizzo diretto di un’immagine, GIF o video.</p><label>Indirizzo URL<input id="media-url" type="url" placeholder="https://esempio.it/immagine.jpg" required></label><label>Formato<select id="url-type"><option value="auto">Automatico</option><option value="image">Immagine / GIF</option><option value="video">Video</option></select></label><p class="fine-print">I link a pagine web non sono file multimediali. Il sito di origine deve consentire il caricamento esterno.</p><div class="dialog-actions"><button type="button" class="button" id="cancel-url">Annulla</button><button class="button primary">Aggiungi alla board</button></div></form></dialog>
+  <dialog id="help-dialog"><span class="eyebrow">PICCOLA GUIDA</span><h2>Il tuo pensiero, in movimento.</h2><dl><dt>Aggiungi media</dt><dd>Trascina file dal computer, immagini dal browser o incolla immagini e URL.</dd><dt>Organizza</dt><dd>Trascina un nodo per spostarlo. Usa la maniglia in basso a destra per ridimensionarlo.</dd><dt>Collega</dt><dd>Trascina dal pallino a destra di un nodo a un altro nodo, oppure premi C e seleziona due nodi. Clicca una freccia per darle un nome.</dd><dt>Naviga</dt><dd>Trascina lo sfondo per muoverti. Rotella per lo zoom; F per vedere tutto.</dd><dt>Scorciatoie</dt><dd>V seleziona · C collega · N nota · Canc elimina · Esc annulla.</dd><dt>Salva</dt><dd>Salvataggio automatico in questo browser. Esporta un progetto .imageflux per conservarlo o trasferirlo, inclusi i file importati. I media da URL restano esterni.</dd></dl><button id="close-help" class="button primary">Iniziamo</button></dialog>
+  <input id="file-input" type="file" accept="image/*,video/*" multiple hidden>
+  <input id="project-input" type="file" accept=".imageflux,.json" hidden>
+  <script type="module">
+function mediaType(value) {
+  if (value.startsWith('image/')) return 'image';
+  if (value.startsWith('video/')) return 'video';
+  const path = value.split(/[?#]/)[0].toLowerCase();
+  if (/\.(png|jpe?g|gif|webp|avif|svg|bmp)$/.test(path)) return 'image';
+  if (/\.(mp4|webm|ogg|mov|m4v)$/.test(path)) return 'video';
+  return null;
+}
+
+function safeSource(source) {
+  if (typeof source !== 'string') return false;
+  return /^https?:\/\//i.test(source) || /^data:(image|video)\/[a-z0-9.+-]+;base64,/i.test(source);
+}
+
+function validateProject(project) {
+  if (!project || project.version !== 1 || !Array.isArray(project.nodes) || !Array.isArray(project.edges)) throw new Error('Formato progetto non valido');
+  if (project.nodes.length > 2000 || project.edges.length > 10000) throw new Error('Progetto troppo grande');
+  const ids = new Set();
+  for (const n of project.nodes) {
+    if (!n || typeof n.id !== 'string' || ids.has(n.id) || !['image', 'video', 'note'].includes(n.type) || typeof n.title !== 'string' || !Number.isFinite(n.x) || !Number.isFinite(n.y) || !Number.isFinite(n.width) || n.width < 140 || n.width > 2000) throw new Error('Nodo non valido');
+    if (n.type !== 'note' && !safeSource(n.src)) throw new Error('Indirizzo multimediale non valido');
+    if (n.type === 'note' && typeof n.text !== 'string') throw new Error('Nota non valida');
+    ids.add(n.id);
+  }
+  for (const e of project.edges) {
+    if (!e || typeof e.id !== 'string' || !ids.has(e.from) || !ids.has(e.to) || e.from === e.to || (e.label !== undefined && typeof e.label !== 'string')) throw new Error('Collegamento non valido');
+  }
+  return project;
+}
+
+function connect(nodes, edges, from, to) {
+  if (from === to || !nodes.some(n => n.id === from) || !nodes.some(n => n.id === to) || edges.some(e => e.from === from && e.to === to)) return null;
+  return { id: crypto.randomUUID(), from, to, label: '' };
+}
+
+
+const $ = id => document.getElementById(id);
+const viewport = $('viewport');
+const world = $('world');
+let state = { version: 1, name: 'Senza titolo', nodes: [], edges: [], camera: { x: 0, y: 0, scale: 1 } };
+let selected = null;
+let tool = 'select';
+let source = null;
+let gesture = null;
+let db;
+let saveTimer;
+let toastTimer;
+let saveQueue = Promise.resolve();
+let hydrating = true;
+let dragDepth = 0;
+const elements = new Map();
+const uid = () => crypto.randomUUID();
+const icons = {
+  'select-tool': '<path d="m5 3 14 10-7 1-3 7z"/>',
+  'connect-tool': '<rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/><path d="M8 5h6a4 4 0 0 1 4 4v7M15 13l3 3 3-3"/>',
+  'add-media': '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/>',
+  'add-url': '<path d="M14 3h7v7M21 3 10 14M10 5H6a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-4"/>',
+  'fit': '<path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/>',
+};
+for (const [id, paths] of Object.entries(icons)) {
+  $(id).innerHTML = `<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+}
+
+function toast(message) {
+  $('toast').textContent = message;
+  $('toast').hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $('toast').hidden = true, 4800);
+}
+function changed() {
+  if (hydrating) return;
+  $('save-status').textContent = 'Salvataggio…';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(save, 400);
+}
+function save() {
+  if (!db) { $('save-status').textContent = 'Esporta per salvare'; return; }
+  const snapshot = structuredClone(state);
+  saveQueue = saveQueue.catch(() => {}).then(() => new Promise((resolve, reject) => {
+    const tx = db.transaction('projects', 'readwrite');
+    tx.objectStore('projects').put(snapshot, 'current');
+    tx.oncomplete = () => { $('save-status').textContent = '✓ Salvato nel browser'; resolve(); };
+    tx.onerror = () => { $('save-status').textContent = 'Salvataggio non riuscito'; toast('Spazio locale esaurito o non disponibile. Esporta il progetto per conservarlo.'); reject(tx.error); };
+  }));
+  saveQueue.catch(() => {});
+}
+function point(clientX, clientY) {
+  const r = viewport.getBoundingClientRect();
+  return { x: (clientX - r.left - state.camera.x) / state.camera.scale, y: (clientY - r.top - state.camera.y) / state.camera.scale };
+}
+function center() {
+  const r = viewport.getBoundingClientRect();
+  return point(r.left + r.width / 2 - 130, r.top + r.height / 2 - 110);
+}
+function camera() {
+  const c = state.camera;
+  world.style.transform = `translate(${c.x}px,${c.y}px) scale(${c.scale})`;
+  viewport.style.backgroundPosition = `${c.x}px ${c.y}px`;
+  viewport.style.backgroundSize = `${24 * c.scale}px ${24 * c.scale}px`;
+  $('zoom-level').textContent = `${Math.round(c.scale * 100)}%`;
+}
+function zoom(scale, x = viewport.clientWidth / 2, y = viewport.clientHeight / 2) {
+  const c = state.camera;
+  const next = Math.max(.15, Math.min(3, scale));
+  c.x = x - (x - c.x) * next / c.scale;
+  c.y = y - (y - c.y) * next / c.scale;
+  c.scale = next;
+  camera(); changed();
+}
+function fit() {
+  if (!state.nodes.length) { state.camera = {x:0,y:0,scale:1}; camera(); changed(); return; }
+  const bounds = state.nodes.map(n => ({ x:n.x,y:n.y,w:n.width,h:elements.get(n.id)?.offsetHeight || 200 }));
+  const minX = Math.min(...bounds.map(b => b.x)), minY = Math.min(...bounds.map(b => b.y));
+  const maxX = Math.max(...bounds.map(b => b.x + b.w)), maxY = Math.max(...bounds.map(b => b.y + b.h));
+  const scale = Math.max(.15, Math.min(1.25, (viewport.clientWidth - 140) / (maxX-minX), (viewport.clientHeight - 170) / (maxY-minY)));
+  state.camera = { scale, x:(viewport.clientWidth-(maxX-minX)*scale)/2-minX*scale, y:(viewport.clientHeight-(maxY-minY)*scale)/2-minY*scale };
+  camera(); changed();
+}
+function setTool(next) {
+  tool = next; source = null;
+  document.body.classList.toggle('connecting', next === 'connect');
+  $('select-tool').classList.toggle('active', next === 'select');
+  $('connect-tool').classList.toggle('active', next === 'connect');
+  $('select-tool').setAttribute('aria-pressed', String(next === 'select'));
+  $('connect-tool').setAttribute('aria-pressed', String(next === 'connect'));
+  $('connection-hint').hidden = next !== 'connect';
+  elements.forEach(el => el.classList.remove('connect-source'));
+}
+function select(id, kind = 'node') {
+  selected = id ? { id, kind } : null;
+  elements.forEach((el,key) => el.classList.toggle('selected', key === id && kind === 'node'));
+  const item = kind === 'node' ? state.nodes.find(n => n.id === id) : state.edges.find(e => e.id === id);
+  $('inspector').hidden = !item;
+  if (!item) { drawEdges(); return; }
+  $('item-title').value = kind === 'node' ? item.title : item.label || '';
+  $('note-field').hidden = kind !== 'node' || item.type !== 'note';
+  $('width-field').hidden = kind !== 'node';
+  if (kind === 'node') { $('item-width').value = item.width; $('note-text').value = item.text || ''; }
+  $('selection-info').textContent = kind === 'edge' ? 'Collegamento direzionale. Modifica il titolo per descrivere la relazione.' : item.type === 'note' ? 'Una nota per dare contesto alle tue idee.' : item.src.startsWith('data:') ? 'File incluso nel progetto e nel salvataggio locale.' : 'Media esterno: richiede accesso al sito di origine.';
+  $('delete-selection').textContent = kind === 'edge' ? 'Elimina collegamento' : 'Elimina elemento';
+  drawEdges();
+}
+const observer = new ResizeObserver(() => drawEdges());
+function positionNode(n) {
+  const el = elements.get(n.id);
+  el.style.left = `${n.x}px`; el.style.top = `${n.y}px`; el.style.width = `${n.width}px`;
+}
+function createNode(n) {
+  const el = document.createElement('article');
+  el.className = `node ${n.type}`; el.dataset.id = n.id;
+  el.setAttribute('aria-label', n.title);
+  const head = document.createElement('div'); head.className = 'node-header';
+  const title = document.createElement('span'); title.className = 'node-title'; title.textContent = n.title;
+  const badge = document.createElement('span'); badge.className = 'node-badge'; badge.textContent = n.type === 'note' ? 'NOTA' : n.type === 'video' ? 'VIDEO' : /gif/i.test(n.src.slice(0,50)) ? 'GIF' : 'IMAGE';
+  head.append(title,badge); el.append(head);
+  if (n.type === 'note') {
+    const body = document.createElement('div'); body.className = 'note-body'; body.textContent = n.text; el.append(body);
+  } else {
+    const wrap = document.createElement('div'); wrap.className = 'media-wrap';
+    const media = document.createElement(n.type === 'video' ? 'video' : 'img');
+    if (n.type === 'video') { media.controls = true; media.preload = 'metadata'; media.playsInline = true; }
+    else { media.alt = n.title; media.draggable = false; }
+    media.addEventListener('error', () => {
+      const error = document.createElement('div'); error.className = 'media-error';
+      error.textContent = 'Media non disponibile. Controlla il link, l’accesso al sito o il formato supportato dal browser.';
+      const retry = document.createElement('button'); retry.textContent = 'Riprova';
+      retry.onclick = () => { error.remove(); media.hidden = false; media.src = n.src; if (n.type === 'video') media.load(); };
+      error.append(retry); wrap.querySelector('.media-error')?.remove(); wrap.append(error); media.hidden = true;
+    });
+    media.src = n.src; wrap.append(media); el.append(wrap);
+  }
+  const port = document.createElement('button'); port.className = 'port'; port.title = 'Trascina per collegare'; port.setAttribute('aria-label','Collega questo nodo');
+  const resize = document.createElement('button'); resize.className = 'resize'; resize.setAttribute('aria-label','Ridimensiona nodo');
+  el.append(port,resize); $('nodes').append(el); elements.set(n.id,el); positionNode(n); observer.observe(el);
+}
+function render() {
+  observer.disconnect(); elements.clear(); $('nodes').replaceChildren();
+  for (const n of state.nodes) createNode(n);
+  $('empty-state').hidden = state.nodes.length > 0;
+  $('board-count').textContent = `${state.nodes.length} elementi · ${state.edges.length} collegamenti`;
+  $('project-name').value = state.name;
+  camera(); drawEdges();
+}
+function drawEdges() {
+  const layer = $('edge-layer'); layer.replaceChildren();
+  for (const e of state.edges) {
+    const a = state.nodes.find(n=>n.id === e.from), b = state.nodes.find(n=>n.id === e.to);
+    if (!a || !b) continue;
+    const ax = a.x + a.width, ay = a.y + (elements.get(a.id)?.offsetHeight || 200)/2;
+    const bx = b.x, by = b.y + (elements.get(b.id)?.offsetHeight || 200)/2;
+    const bend = Math.max(70, Math.abs(bx-ax)*.45);
+    const d = `M ${ax} ${ay} C ${ax+bend} ${ay}, ${bx-bend} ${by}, ${bx} ${by}`;
+    for (const hit of [true,false]) {
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d',d); path.setAttribute('class',hit ? 'edge-hit' : `edge${selected?.id === e.id ? ' selected' : ''}`);
+      if (!hit) path.setAttribute('marker-end','url(#arrow)');
+      path.addEventListener('pointerdown', ev => ev.stopPropagation());
+      path.addEventListener('click', () => select(e.id,'edge')); layer.append(path);
+    }
+    if (e.label) {
+      const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+      text.setAttribute('x',(ax+bx)/2); text.setAttribute('y',(ay+by)/2-10); text.setAttribute('text-anchor','middle'); text.setAttribute('class','edge-label'); text.textContent = e.label;
+      text.addEventListener('pointerdown', ev=>ev.stopPropagation()); text.addEventListener('click',()=>select(e.id,'edge')); layer.append(text);
+    }
+  }
+}
+function addNode(type, src, title, pos = center(), text = '') {
+  const n = {id:uid(),type,src,title,x:pos.x,y:pos.y,width:type === 'note' ? 240 : 280,text};
+  state.nodes.push(n); createNode(n); $('empty-state').hidden = true; updateCount(); changed(); return n;
+}
+function updateCount() { $('board-count').textContent = `${state.nodes.length} elementi · ${state.edges.length} collegamenti`; }
+function addConnection(from,to) {
+  const e = connect(state.nodes,state.edges,from,to);
+  if (e) { state.edges.push(e); drawEdges(); updateCount(); changed(); toast('Collegamento creato. Clicca la freccia per aggiungere un’etichetta.'); }
+}
+function removeSelected() {
+  if (!selected) return;
+  if (selected.kind === 'node') {
+    const el = elements.get(selected.id); if (el) { observer.unobserve(el); el.querySelector('video')?.pause(); el.remove(); elements.delete(selected.id); }
+    state.nodes = state.nodes.filter(n=>n.id !== selected.id);
+    state.edges = state.edges.filter(e=>e.from !== selected.id && e.to !== selected.id);
+  } else state.edges = state.edges.filter(e=>e.id !== selected.id);
+  select(null); $('empty-state').hidden = state.nodes.length > 0; updateCount(); changed();
+}
+viewport.addEventListener('pointerdown', ev => {
+  if (ev.button !== 0 && ev.button !== 1) return;
+  if (ev.target.closest('button,video') && !ev.target.closest('.port,.resize')) return;
+  const el = ev.target.closest('.node');
+  const p = point(ev.clientX,ev.clientY);
+  if (el) {
+    const n = state.nodes.find(n=>n.id === el.dataset.id);
+    if (ev.target.closest('.port')) {
+      source = n.id; el.classList.add('connect-source'); gesture = {kind:'connect',id:n.id};
+    } else if (tool === 'connect') {
+      if (source) { addConnection(source,n.id); setTool('connect'); }
+      else { source = n.id; el.classList.add('connect-source'); }
+      return;
+    } else {
+      select(n.id);
+      gesture = ev.target.closest('.resize') ? {kind:'resize',id:n.id,x:p.x,width:n.width} : {kind:'move',id:n.id,dx:p.x-n.x,dy:p.y-n.y};
+    }
+  } else {
+    select(null); gesture = {kind:'pan',x:ev.clientX,y:ev.clientY,cx:state.camera.x,cy:state.camera.y};
+  }
+  ev.preventDefault(); viewport.setPointerCapture(ev.pointerId);
+});
+viewport.addEventListener('pointermove', ev => {
+  if (!gesture) return;
+  const p = point(ev.clientX,ev.clientY);
+  if (gesture.kind === 'pan') {
+    state.camera.x = gesture.cx + ev.clientX - gesture.x; state.camera.y = gesture.cy + ev.clientY - gesture.y; camera();
+  } else if (gesture.kind === 'move' || gesture.kind === 'resize') {
+    const n = state.nodes.find(n=>n.id===gesture.id);
+    if (gesture.kind === 'move') { n.x = p.x-gesture.dx; n.y=p.y-gesture.dy; }
+    else n.width=Math.max(160,Math.min(1000,gesture.width+p.x-gesture.x));
+    positionNode(n); drawEdges();
+  } else {
+    drawEdges();
+    const n = state.nodes.find(n=>n.id===gesture.id);
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M ${n.x+n.width} ${n.y+elements.get(n.id).offsetHeight/2} L ${p.x} ${p.y}`);
+    path.setAttribute('class','edge'); path.style.strokeDasharray='6 5'; $('edge-layer').append(path);
+  }
+});
+function finishGesture(ev) {
+  if (!gesture) return;
+  if (gesture.kind === 'connect' && ev.type !== 'pointercancel') {
+    const target = document.elementFromPoint(ev.clientX,ev.clientY)?.closest('.node');
+    if (target) addConnection(gesture.id,target.dataset.id);
+    source = null; elements.forEach(el=>el.classList.remove('connect-source')); drawEdges();
+  }
+  gesture=null; if (viewport.hasPointerCapture(ev.pointerId)) viewport.releasePointerCapture(ev.pointerId); changed();
+}
+viewport.addEventListener('pointerup',finishGesture); viewport.addEventListener('pointercancel',finishGesture);
+viewport.addEventListener('wheel', ev => {
+  if (ev.target.closest('video')) return;
+  ev.preventDefault(); const r=viewport.getBoundingClientRect(); zoom(state.camera.scale*Math.exp(-ev.deltaY*.0015),ev.clientX-r.left,ev.clientY-r.top);
+},{passive:false});
+
+async function importFiles(files,pos=center()) {
+  const supported = [...files].filter(f=>mediaType(f.type) || mediaType(f.name));
+  if (!supported.length) { toast('Scegli immagini, GIF o video.'); return; }
+  if (supported.length < files.length) toast('Alcuni file non sono immagini o video e sono stati ignorati.');
+  let index=0;
+  for (const file of supported) {
+    if (file.size > 80*1024*1024) { toast(`${file.name}: il limite per file è 80 MB.`); continue; }
+    try {
+      const mimeByExtension = {png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',webp:'image/webp',avif:'image/avif',svg:'image/svg+xml',bmp:'image/bmp',mp4:'video/mp4',webm:'video/webm',ogg:'video/ogg',mov:'video/quicktime',m4v:'video/mp4'};
+      const mime = mediaType(file.type) ? file.type : mimeByExtension[file.name.split('.').pop().toLowerCase()];
+      const content = mime ? new Blob([file], {type:mime}) : file;
+      const src = await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(content);});
+      const n=addNode(mediaType(file.type)||mediaType(file.name),src,file.name,{x:pos.x+(index%3)*320,y:pos.y+Math.floor(index/3)*300});
+      select(n.id); index++;
+    } catch { toast(`Impossibile leggere ${file.name}`); }
+  }
+}
+function importUrl(url,pos=center(),type='auto') {
+  if (/^data:/i.test(url) && safeSource(url)) {
+    const kind = url.startsWith('data:video/') ? 'video' : 'image';
+    const n = addNode(kind,url,'Media dal browser',pos); select(n.id); return true;
+  }
+  if (!/^https?:\/\//i.test(url) || !safeSource(url)) { toast('Usa un indirizzo HTTP o HTTPS diretto al media.'); return false; }
+  let parsed; try { parsed=new URL(url); } catch { toast('Indirizzo non valido.'); return false; }
+  const kind=type==='auto' ? mediaType(parsed.pathname)||'image' : type;
+  let title=parsed.pathname.split('/').pop() || parsed.hostname;
+  try { title=decodeURIComponent(title); } catch {}
+  const n=addNode(kind,url,title,pos); select(n.id); return true;
+}
+viewport.addEventListener('dragenter',ev=>{ev.preventDefault();dragDepth++;$('drop-overlay').classList.add('visible');});
+viewport.addEventListener('dragover',ev=>{ev.preventDefault();ev.dataTransfer.dropEffect='copy';});
+viewport.addEventListener('dragleave',()=>{if(--dragDepth<=0){dragDepth=0;$('drop-overlay').classList.remove('visible');}});
+viewport.addEventListener('drop',async ev=>{
+  ev.preventDefault();dragDepth=0;$('drop-overlay').classList.remove('visible');
+  const pos=point(ev.clientX,ev.clientY);
+  if(ev.dataTransfer.files.length) return importFiles(ev.dataTransfer.files,pos);
+  const html=ev.dataTransfer.getData('text/html');
+  const doc=html ? new DOMParser().parseFromString(html,'text/html') : null;
+  const url=doc?.querySelector('img')?.getAttribute('src') || ev.dataTransfer.getData('text/uri-list').split('\n').find(l=>l && !l.startsWith('#')) || ev.dataTransfer.getData('text/plain').trim();
+  if(url) importUrl(url,pos); else toast('Trascina un file o un’immagine con un URL accessibile.');
+});
+document.addEventListener('paste',ev=>{
+  if(isEditing(ev.target))return;
+  const files=[...ev.clipboardData.items].filter(i=>i.kind==='file').map(i=>i.getAsFile()).filter(Boolean);
+  if(files.length){ev.preventDefault();importFiles(files);return;}
+  const value=ev.clipboardData.getData('text/plain').trim();
+  if(/^https?:\/\//i.test(value)){ev.preventDefault();importUrl(value);}
+});
+function isEditing(target){return target.closest('input,textarea,select,[contenteditable=true]') || document.querySelector('dialog[open]');}
+document.addEventListener('keydown',ev=>{
+  if(isEditing(ev.target))return;
+  if(ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  if(ev.key==='Delete'||ev.key==='Backspace'){ev.preventDefault();removeSelected();}
+  if(ev.key.toLowerCase()==='c')setTool('connect');
+  if(ev.key.toLowerCase()==='v')setTool('select');
+  if(ev.key.toLowerCase()==='n')addNote();
+  if(ev.key.toLowerCase()==='f')fit();
+  if(ev.key==='Escape'){setTool('select');select(null);}
+});
+function addNote(){ const n=addNode('note','', 'Una nuova idea',center(),'Scrivi un’idea, un riferimento o il prossimo passo.');select(n.id);$('note-text').focus(); }
+$('select-tool').onclick=()=>setTool('select'); $('connect-tool').onclick=()=>setTool(tool==='connect'?'select':'connect');
+$('add-note').onclick=addNote;
+$('add-media').onclick=$('empty-add').onclick=()=>$('file-input').click();
+$('file-input').onchange=async ev=>{await importFiles(ev.target.files);ev.target.value='';};
+$('add-url').onclick=()=>$('url-dialog').showModal();
+$('cancel-url').onclick=()=>$('url-dialog').close();
+$('url-form').onsubmit=ev=>{ev.preventDefault();if(importUrl($('media-url').value.trim(),center(),$('url-type').value)){ $('url-dialog').close();$('url-form').reset(); }};
+$('help').onclick=()=>$('help-dialog').showModal();$('close-help').onclick=()=>$('help-dialog').close();
+$('zoom-in').onclick=()=>zoom(state.camera.scale*1.2);$('zoom-out').onclick=()=>zoom(state.camera.scale/1.2);$('fit').onclick=fit;
+$('close-inspector').onclick=()=>select(null);$('delete-selection').onclick=removeSelected;
+$('project-name').oninput=ev=>{state.name=ev.target.value;changed();};
+$('item-title').oninput=ev=>{
+  if(!selected)return;
+  if(selected.kind==='edge'){state.edges.find(e=>e.id===selected.id).label=ev.target.value;drawEdges();}
+  else { const n=state.nodes.find(n=>n.id===selected.id);n.title=ev.target.value;const el=elements.get(n.id);el.querySelector('.node-title').textContent=n.title;el.setAttribute('aria-label',n.title);const img=el.querySelector('img');if(img)img.alt=n.title; }
+  changed();
+};
+$('note-text').oninput=ev=>{const n=state.nodes.find(n=>n.id===selected?.id);if(n?.type==='note'){n.text=ev.target.value;elements.get(n.id).querySelector('.note-body').textContent=n.text;changed();}};
+$('item-width').oninput=ev=>{const n=state.nodes.find(n=>n.id===selected?.id);if(n){n.width=Number(ev.target.value);positionNode(n);drawEdges();changed();}};
+$('export-project').onclick=()=>{
+  const blob=new Blob([JSON.stringify(state)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`${(state.name || 'ImageFlux').replace(/[^\p{L}\p{N}_-]/gu,'_')}.imageflux`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Progetto esportato con i file locali inclusi.');
+};
+$('open-project').onclick=()=>$('project-input').click();
+$('project-input').onchange=async ev=>{
+  const file=ev.target.files[0];if(!file)return;
+  try {
+    if(file.size>500*1024*1024)throw new Error('Il progetto supera il limite di 500 MB');
+    const project=validateProject(JSON.parse(await file.text()));
+    if(state.nodes.length && !window.confirm('Sostituire la board attuale? Esporta prima il progetto se vuoi conservarlo.'))return;
+    applyProject(project);changed();toast('Progetto aperto.');
+  }catch(error){toast(`Impossibile aprire il progetto: ${error.message}`);}
+  finally{ev.target.value='';}
+};
+function applyProject(project){
+  state={version:1,name:typeof project.name==='string'?project.name:'Senza titolo',nodes:project.nodes,edges:project.edges,camera:{x:0,y:0,scale:1}};
+  const c=project.camera;if(c&&Number.isFinite(c.x)&&Number.isFinite(c.y)&&Number.isFinite(c.scale)&&c.scale>=.15&&c.scale<=3)state.camera=c;
+  selected=null;setTool('select');$('inspector').hidden=true;render();
+}
+$('load-demo').onclick=()=>{
+  const art=(a,b,label)=>'data:image/svg+xml;base64,'+btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="560" height="380"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="560" height="380" fill="url(#g)"/><circle cx="320" cy="170" r="115" fill="none" stroke="#ffffff55" stroke-width="1"/><circle cx="320" cy="170" r="80" fill="#ffffff15"/><path d="M0 320L140 130 270 320 430 80 560 320V380H0" fill="#0d181b77"/><text x="30" y="45" fill="#ffffffaa" font-size="13" font-family="sans-serif" letter-spacing="4">${label}</text></svg>`);
+  const a=addNode('image',art('#5f7461','#172e35','01 / ATMOSPHERE'),'Atmosfera · quiete',{x:80,y:100});
+  const b=addNode('image',art('#c4a586','#624e52','02 / PALETTE'),'Palette · toni naturali',{x:480,y:100});
+  const c=addNode('note','','Direzione creativa',{x:880,y:140},'Una pausa dal rumore.\n\nColori organici, forme essenziali e spazio per respirare.');
+  state.edges.push({...connect(state.nodes,state.edges,a.id,b.id),label:'ispira'}, {...connect(state.nodes,state.edges,b.id,c.id),label:'definisce'});drawEdges();updateCount();requestAnimationFrame(fit);changed();
+};
+async function init(){
+  try {
+    db=await new Promise((resolve,reject)=>{const req=indexedDB.open('imageflux',1);req.onupgradeneeded=()=>req.result.createObjectStore('projects');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});
+    const stored=await new Promise((resolve,reject)=>{const req=db.transaction('projects').objectStore('projects').get('current');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});
+    if(stored)applyProject(validateProject(stored));
+    $('save-status').textContent='✓ Salvato nel browser';
+  }catch{toast('Salvataggio locale non disponibile. Usa Esporta per conservare il progetto.');$('save-status').textContent='Esporta per salvare';}
+  finally{hydrating=false;render();}
+}
+render();init();
+
+</script>
+</body>
+</html>
